@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drag Drop Practice</title>
+
+    <style type="text/css">
+        .mydiv
+        {
+            height: 400px;
+            width: 500px;
+            border: 1px solid red;
+            float:left;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Get container element by id
+            var divObj = getById("div1");
+
+            //This event fires when dragged item is dropped
+            divObj.ondrop = drop;
+
+            //event is fired when item is dragged over
+            divObj.ondragover = allowDrop;
+
+            var imgObj = getById("myimg");
+
+            //This event starts when draging starts
+            imgObj.ondragstart = drag;
+
+        } //End of MainFunction
+
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            //attach dragged item id in 'ev' variable
+            ev.dataTransfer.setData("Text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            //get id of ev
+            var data = ev.dataTransfer.getData("Text");
+            //find the dragged item and append to item where it is dropped
+            ev.target.appendChild(getById(data));
+        }
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+    </script>
+
+</head>
+<body onload="return MainFunction()">
+
+    <div id="div1" class="mydiv"></div>
+
+    <div class="mydiv">
+
+        <img id="myimg" src="myimg.png" draggable="true" width="400" height="150">
+    </div>
+    
+</body>
+</html>

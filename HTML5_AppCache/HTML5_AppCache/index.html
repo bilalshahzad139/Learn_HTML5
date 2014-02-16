@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html manifest="myappcache.appcache">
+<head>
+    <title>Application Cache Practice</title>
+    <script type="text/javascript">
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Find button by id and attach a event handler for 'click' event
+            document.getElementById("btnShowStatus").onclick = function () {
+
+                if (!window.applicationCache) {
+                    alert('Application Cache support is not available in this browser');
+                    return false;
+                }
+
+                var result = GetCacheStatus();
+                alert(result);
+
+            };//end of click
+
+        } //End of MainFunction
+
+        function GetCacheStatus() {
+            
+            var appCache = window.applicationCache;
+
+            switch (appCache.status) {
+                case appCache.UNCACHED: // UNCACHED == 0
+                    return 'UNCACHED';
+                    break;
+                case appCache.IDLE: // IDLE == 1
+                    return 'IDLE';
+                    break;
+                case appCache.CHECKING: // CHECKING == 2
+                    return 'CHECKING';
+                    break;
+                case appCache.DOWNLOADING: // DOWNLOADING == 3
+                    return 'DOWNLOADING';
+                    break;
+                case appCache.UPDATEREADY:  // UPDATEREADY == 4
+                    return 'UPDATEREADY';
+                    break;
+                case appCache.OBSOLETE: // OBSOLETE == 5
+                    return 'OBSOLETE';
+                    break;
+                default:
+                    return 'UKNOWN CACHE STATUS';
+                    break;
+            };
+        } //GetCacheStatus()
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+    <script src="myfile.js" type="text/javascript"></script>
+    <div>
+        To create application using 'Application Cache feature', you need to create a file
+        with extension <b>.appcache</b>
+        <br />
+        In this file, you need to mention the file paths of those files which you want to
+        cache on client side for offline use To remove application from client cache in
+        chrome browser, open "chrome://appcache-internals/" in browser and remove the desired
+        application
+        <p style="color: red">
+            In this example, we are caching a <b>.js</b> file and an <b>img</b> file.</p>
+        <p style="color: red">
+            You will have to add mapping in your web.config file or in IIS to allow <b>.appcache</b>
+            file access from client.</p>
+    </div>
+    <p>
+        <button onclick="getDateTime()">
+            Get Date and Time</button>
+    </p>
+    <div id="timePara">
+    </div>
+    <p>
+        <img src="myimg.png">
+    </p>
+    <div>
+        <button id="btnShowStatus" value="Show Status">Show Status
+        </button>
+        <div id="divStatus">
+        </div>
+    </div>
+</body>
+</html>

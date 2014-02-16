@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Storage Practice</title>
+    <script type="text/javascript">
+        /*
+        -> 'localStorage' stores data with no expiration date
+        -> Each site has its own separate storage area.
+        */
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Find button by id and attach a event handler for 'click' event
+            document.getElementById("btnRemove").onclick = function () {
+                if (window.Storage) {
+                    localStorage.removeItem("clickcount");
+                }
+            };
+
+            //Find button by id and attach a event handler for 'click' event
+            document.getElementById("btnAddNewItem").onclick = function () {
+                localStorage.setItem("NewItem", "Testing");
+            };
+
+
+            /* We can also add callback events to track storage changes */
+            //Check if 'addEventListener' support available
+            if (window.addEventListener) {
+                //Attach event with storage to handle event when storage is interacted
+                window.addEventListener("storage", storageHanlder);
+            } else {
+                window.attachEvent("onstorage", storageHanlder);
+            };
+        }//End of MainFunction
+
+        function storageHanlder(e) {
+            //in IE storage event will be stored in 'window.event' object
+            if (!e) { e = window.event; }
+            alert('storage API is accessed');
+        }
+
+        //Function which will be fired to count clicks
+        function clickCounter() {
+            //Check if browser supports Storage API
+            if (typeof (Storage) !== "undefined") {
+                //check if 'localStorage' object contains any custom propery 'clickcount'
+                if (localStorage.clickcount) {
+                    localStorage.clickcount = Number(localStorage.clickcount) + 1;
+                }
+                else {
+                    localStorage.clickcount = 1;
+                }
+                document.getElementById("result").innerHTML = "You have clicked the button " + localStorage.clickcount + " time(s).";
+            }
+            else {
+                document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+            }
+        }//end of click counter
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+
+    <p>
+        <button onclick="clickCounter()" type="button">Click me!</button>
+        <button id="btnRemove" type="button">Remove Counter!</button>
+    </p>
+    <div id="result"></div>
+    <p>Click the button to see the counter increase.</p>
+    <p>Close the browser tab (or window), and try again, and the counter will continue to count (is not reset).</p>
+
+    <div>
+        <button id="btnAddNewItem" >Add New Item</button>
+    </div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IndexedDB Practice</title>
+
+    <script type="text/javascript">
+        var db = {};
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            var request = window.indexedDB.open("MyDB", 1.0);
+
+            //once request is servered, initialized 'db' variable on success
+            request.onsuccess = function (e) {
+                db = e.target.result;
+            };
+
+            //Set error callback
+            request.onerror = errorCallback;
+
+            // We can only create Object stores in a versionchange transaction.
+            request.onupgradeneeded = function (e) {
+
+                db = e.target.result;
+
+                // A versionchange transaction is started automatically.
+                e.target.transaction.onerror = errorCallback;
+
+                if (db.objectStoreNames.contains("mydatastore")) {
+                    db.deleteObjectStore("mydatastore");
+                }
+
+                var store = db.createObjectStore("mydatastore", { keyPath: "timeStamp" });
+            };
+
+
+            //find button by id
+            var btnAdd = getById("btnAddData");
+            //click event handler
+            btnAdd.onclick = function () {
+
+                var data = getById("txtName").value;
+
+                //create a transaction
+                var trans = db.transaction(["mydatastore"], "readwrite");
+
+                //open the objecstore from transaction
+                var store = trans.objectStore("mydatastore");
+
+                //save data in objecstore
+                var request = store.put({
+                    "Name": data,
+                    "timeStamp": new Date().getTime()
+                });
+
+                request.onsuccess = function (e) {
+                    GetAllItems();
+                };
+
+                request.onerror = errorCallback;
+
+            };//end of btnAdd click
+
+
+
+            //find button and click event handler
+            getById("btnGetAll").onclick = function () {
+
+                GetAllItems();
+
+            };//end of btnAdd click
+
+
+
+        } //End of MainFunction
+
+        function GetAllItems() {
+
+            getById("datacontainer").innerHTML = "";
+
+            var trans = db.transaction(["mydatastore"], "readwrite");
+            var store = trans.objectStore("mydatastore");
+
+            //Ready data by using cursor approach
+            var cursorRequest = store.openCursor();
+
+            //curser onsuccess event
+            cursorRequest.onsuccess = function (e) {
+                var result = e.target.result;
+                if (!!result == false)
+                    return;
+                
+                //read record by record
+                renderData(e.target.result.value);
+                //move to next record in cursor
+                result.continue();
+            };
+
+            cursorRequest.onerror = errorCallback;
+        }
+
+        function renderData(rs) {
+            var output = "";
+            var Name = rs.Name;
+            var dob = rs.timeStamp;
+
+            output ="Name:" + Name + " DOB:" + dob;
+            var node = document.createTextNode(output);
+            getById("datacontainer").appendChild(node);
+        }
+
+        function successCallback(tx, r) {
+            alert('success');
+        }
+
+        function errorCallback(tx, e) {
+            alert(e.message);
+
+        }
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+    </script>
+
+</head>
+<body onload="return MainFunction()">
+
+    <div>
+        <p>
+            IndexedDB is a way for you to persistently store data inside a user's browser. Because it lets you create web applications with rich query abilities regardless of network availability, your applications can work both online and offline.
+        
+        The basic pattern that IndexedDB encourages is the following:<br />
+
+        -> Open a database and start a transaction.<br />
+        -> Create an object store. <br />
+        -> Make a request to do some database operation, like adding or retrieving data.<br />
+        -> Wait for the operation to complete by listening to the right kind of DOM event.<br />
+        -> Do something with the results (which can be found on the request object).<br />
+        </p>
+
+    </div>
+    <div>
+         IndexedDB uses object stores rather than tables, and a single database can contain any number of object stores. Whenever a value is stored in an object store, it is associated with a key. There are several different ways that a key can be supplied depending on whether the object store uses a key path or a key generator.
+
+    </div>
+
+
+    <input type="text" id="txtName" />
+    <button id="btnAddData">Add Data</button>
+    <br />
+    <button id="btnGetAll">Get All Data</button>
+    <br />
+
+    <div id="datacontainer">
+    </div>
+
+</body>
+</html>

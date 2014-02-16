@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File System API Practice</title>
+
+    <script type="text/javascript">
+
+        //check and set our 'requestFileSystem' object accordingly
+        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Request for a file system.
+            //window.TEMPORARY means file can be deleted by browser to free memory if required
+            //window.PERSISTENT means storage can't be cleared unless explicitly authorized by the user or the app
+            var quota = 2*1024 * 1024; //2 MB
+            window.requestFileSystem(window.TEMPORARY,quota , onInitFs, errorHandler);
+
+        } //End of MainFunction
+
+        function onInitFs(fs) {
+
+            fs.root.getFile('log2.txt', { create: true, exclusive: true }, function (fileEntry) {
+
+            }, errorHandler); //end of getFile
+
+
+            getById("btnSave").onclick = function () {
+
+                //create a file
+                fs.root.getFile('log2.txt', { create: true, exclusive: false }, function (fileEntry) {
+
+
+                    //create writer for file
+                    fileEntry.createWriter(function (fileWriter) {
+
+                        //move to end of file so new data should be appended
+                        fileWriter.seek(fileWriter.length); // Start write position at EOF.
+
+                        //execute when writting is completed
+                        fileWriter.onwriteend = function (e) {
+                            console.log('Write completed.');
+                        };
+
+                        //if onerror occurred
+                        fileWriter.onerror = function (e) {
+                            console.log('Write failed: ' + e.toString());
+                        };
+
+                        var dataToWrite = getById('txtToSave').value;
+
+                        // Create a new Blob and write it to log.txt.
+                        var blob = new Blob([dataToWrite], { type: 'text/plain' });
+
+                        //write to file
+                        fileWriter.write(blob);
+
+                    }, errorHandler);
+
+                }, errorHandler); //end of getFile
+
+            }; //end of onclick
+
+            //Load content
+            getById("btnLoad").onclick = function () {
+
+                fs.root.getFile('log2.txt', {}, function (fileEntry) {
+
+                    // Get a File object representing the file,
+                    // then use FileReader to read its contents.
+                    fileEntry.file(function (file) {
+
+                        //create reader object to reader
+                        var reader = new FileReader();
+
+                        //event when data is read from file
+                        reader.onloadend = function (e) {
+                            var txtArea = getById('txtData');
+                            txtArea.value = this.result;
+                        };
+
+                        //read text from 'file' object and raise 'onloadend' event when data is read
+                        reader.readAsText(file);
+
+                    }, errorHandler);//end of file
+                }, errorHandler);//end of getFile
+            };//end of onclick
+
+        }//end of onInitFs
+
+
+        function errorHandler(e) {
+            var msg = e.message;
+
+            console.log('e.message: ' + e.message );
+        }
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+    </script>
+
+</head>
+<body onload="return MainFunction()">
+
+
+    <button id="btnLoad">Load</button>
+
+    <br />
+    <textarea id="txtData" rows="15" cols="30"></textarea>
+    <br />
+    <input type="text" id="txtToSave" /><button id="btnSave">Save</button>
+</body>
+</html>

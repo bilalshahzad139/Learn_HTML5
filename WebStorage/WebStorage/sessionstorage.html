@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Storage Practice</title>
+    <script type="text/javascript">
+        /*
+        -> 'sessionStorage' stores data for a session (for every tab separately)
+        -> Sites can add data to the session storage, and it will be accessible to any page from the same site opened in that window.
+        */
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Find button by id and attach a event handler for 'click' event
+            var btn = document.getElementById("btnRemove");
+            btn.onclick = function () {
+                //check if browser supports storage API
+                if (window.Storage) {
+                    //remove an item from 'sessionStorage'
+                    sessionStorage.removeItem("clickcount");
+                }
+            };
+
+            /* We can also add callback events to track storage changes */
+            //Check if 'addEventListener' support available
+            if (window.addEventListener) {
+                //Attach event with storage to handle event when storage is interacted
+                window.addEventListener("storage", storageHanlder);
+            } else {
+                window.attachEvent("onstorage", storageHanlder);
+            };
+        } //End of MainFunction
+
+        function storageHanlder(e) {
+            //in IE storage event will be stored in 'window.event' object
+            if (!e) { e = window.event; }
+            alert('storage API is accessed');
+        }
+
+        //Function which will be fired to count clicks
+        function clickCounter() {
+            //Check if browser supports Storage API
+            if (typeof (Storage) !== "undefined") {
+                //check if 'sessionStorage' object contains any custom propery 'clickcount'
+                if (sessionStorage.clickcount) {
+                    sessionStorage.clickcount = Number(sessionStorage.clickcount) + 1;
+                }
+                else {
+                    sessionStorage.clickcount = 1;
+                }
+                document.getElementById("result").innerHTML = "You have clicked the button " + sessionStorage.clickcount + " time(s).";
+            }
+            else {
+                document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+            }
+        } //end of click counter
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+    <p>
+        <button onclick="clickCounter()" type="button">
+            Click me!</button>
+        <button id="btnRemove" type="button">
+            Remove Counter!</button>
+    </p>
+    <div id="result">
+    </div>
+    <p>
+        Click the button to see the counter increase.</p>
+    <p>
+        Close the browser tab (or window), and try again, and the counter will continue
+        to count (is not reset).</p>
+</body>
+</html>

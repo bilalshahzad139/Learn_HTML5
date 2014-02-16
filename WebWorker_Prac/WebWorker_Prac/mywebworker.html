@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Worker Sample</title>
+    <script type="text/javascript">
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            
+
+            //Find button by id and attach a event handler for 'click' event
+            document.getElementById("btnSend").onclick = function () {
+
+                var w1 = new Worker("myworker.js");
+
+                //Data to post to worker should be JSON format
+                var dataToSend = {
+                    message: "Hello World from page",
+                    timeout: 3
+                };
+                //post message to worker
+                w1.postMessage(dataToSend);
+
+                //Recieve message from worker
+                w1.onmessage = function (event) {
+                    console.log('in onmessage of w1');
+                    console.log(event.data);
+                };
+
+            };//End of button click
+
+        } //End of MainFunction
+
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+    <p>
+        Count numbers:
+        <output id="result"></output>
+    </p>
+    <button onclick="startWorker()">
+        Start Worker</button>
+    <button onclick="stopWorker()">
+        Stop Worker</button>
+    <button id="btnSend">
+        Send a message to worker</button>
+    <br />
+    <br />
+    <script type="text/javascript">
+
+        //A variable which will hold our 'Worker' reference
+        var w;
+
+        function startWorker() {
+
+            //Check if browser has 'Web Worker' support or not
+            if (typeof (Worker) !== "undefined") {
+
+                //Check if 'Worker' object is already initialized or not
+                if (typeof (w) == "undefined") {
+                    //Create a worker object by providing '.js' file
+                    w = new Worker("myworker.js");
+                }
+
+                //Attach 'onmessage' event, this event will be fired whenever 'postMessage' will be called in worker
+                w.onmessage = function (event) {
+                    console.log('------------------onmessage---------------------');
+                    console.log('event.data:' + event.data);
+                    console.log('event.isTrusted:' + event.isTrusted);
+                    console.log('event.origin:' + event.origin);
+                    console.log('event.source:' + event.source);
+                    console.log('event.srcElement:' + event.srcElement);
+                    console.log('event.isTrusted:' + event.isTrusted);
+                    console.log('event.ports:' + event.ports);
+                    console.log('event.type:' + event.type);
+                    console.log('---------------------------------------');
+
+                    document.getElementById("result").innerHTML = event.data;
+                };
+
+                //Attach 'onerror' event to handle if any error occurs with 'Worker' process
+                w.onerror = function (event) {
+                    console.log('------------------onerror---------------------');
+                    console.log(event.message);
+                    console.log('---------------------------------------');
+                }
+
+            }
+            else {
+                document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+            }
+        }
+
+        function stopWorker() {
+            //Terminate the worker
+            w.terminate();
+        }
+    </script>
+</body>
+</html>

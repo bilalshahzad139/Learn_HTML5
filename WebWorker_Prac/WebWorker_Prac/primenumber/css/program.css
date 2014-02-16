@@ -1,0 +1,9 @@
+﻿/* -- Copyright © Microsoft Corporation. All rights reserved. */
+fieldset {
+    height: 5em;
+    margin: 1em;
+    width: 400px;
+}
+label {
+    display: block;
+}

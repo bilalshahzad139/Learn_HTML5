@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Practice</title>
+    <script type="text/javascript">
+
+        /*
+        -> <canvas> is an HTML element which can be used to draw graphics using scripting (usually JavaScript).
+        -> The <canvas> element isn't supported in some older browsers, but is supported in recent versions of all major browsers.
+        -> The default size of the canvas is 300px * 150px (width * height).
+        -> A <canvas> element has no content and no border of its own.
+        -> Fallback content: We can provide some content (text/img etc.) inside tags so if browser doesn't support canvas tag, this
+        content will be shown to the user.
+        -> <canvas> only supports one primitive shape: rectangles. All other shapes must be created by combining one or more paths.
+
+        */
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan1").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv1');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+
+                //Set color
+                ctx.fillStyle = "rgb(200,0,0)";
+                //Create a rectangle with color set in above line
+                ctx.fillRect(10, 10, 55, 50); //(x,y,width,height)
+
+                ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+                ctx.fillRect(30, 30, 55, 50); //(x,y,width,height)
+
+            };//end of click
+
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan2").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv2');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+
+                //Draw vertical lines
+                for (var x = 0.5; x < 500; x += 10) {
+                   //move to some position
+                    ctx.moveTo(x, 0);
+                    //draw a line till this position from current position (set in above line)
+                    ctx.lineTo(x, 375);
+                }
+
+                //Draw horizontal lines
+                for (var y = 0.5; y < 375; y += 10) {
+                    //move to some position
+                    ctx.moveTo(0, y);
+                    //draw a line till this position from current position (set in above line)
+                    ctx.lineTo(500, y);
+                }
+
+                //Above lines will not be shown on canvas until, wi'll not call '.stroke' method
+                //to draw a line, we need to set stroke style and call 'stroke()' method
+                ctx.strokeStyle = "#eee";
+                ctx.stroke();
+
+            }; //end of click
+
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan3").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv3');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+
+                //Drawing Paths
+                /*
+                -> First you begin the path
+                -> Use drawing commands to draw paths 
+                -> close the path
+                .beginPath() //Creates a new path. Once created, future drawing commands are directed into the path and used to build the path up.
+                .closePath() //Closes the path so that future drawing commands are once again directed to the context.
+                .stroke() //Draws the shape by stroking its outline.
+                .fill() //Draws a solid shape by filling the path's content area. Any open shape is closed automatically on this
+                */
+
+                //Reset internal paths list
+                ctx.beginPath();
+                //Move pointer to some location
+                ctx.moveTo(75, 50);
+                //Draw a line to this point from above point
+                ctx.lineTo(100, 75);
+                //Draw a line to this point from above point
+                ctx.lineTo(100, 25);
+                
+                //Fill the path and closed the shape by conecting start & end points
+                ctx.fill();
+
+            }; //end of click
+
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan4").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv4');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+
+                //Drawing Paths
+                /*
+                -> First you begin the path
+                -> Use drawing commands to draw paths 
+                -> close the path
+                .beginPath() //Creates a new path. Once created, future drawing commands are directed into the path and used to build the path up.
+                .closePath() //Closes the path so that future drawing commands are once again directed to the context.
+                .stroke() //Draws the shape by stroking its outline.
+                .fill() //Draws a solid shape by filling the path's content area. Any open shape is closed automatically on this
+                
+                
+                .arc(x, y, radius, startAngle, endAngle, anticlockwise)
+                */
+
+                //Reset internal paths list
+                ctx.beginPath();
+                
+                ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+                ctx.moveTo(110, 75);
+                ctx.arc(75, 75, 35, 0, Math.PI, false);   // Mouth (clockwise)
+                ctx.moveTo(65, 65);
+                ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+                ctx.moveTo(95, 65);
+                ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+
+                //provides outline/border to the shapes, without calling this shape will not be visible
+                ctx.stroke();
+
+
+            }; //end of click
+
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan5").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv5');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+                
+                /*
+                quadraticCurveTo(cp1x, cp1y, x, y)
+                -> Draws a quadratic Bézier curve from the current pen position to the end point specified by x and y, 
+                    using the control point specified by cp1x and cp1y.
+                */
+
+                //Reset internal paths list
+                ctx.beginPath();
+                
+                //Move to this position as starting point
+                ctx.moveTo(75, 25);
+                
+                ctx.quadraticCurveTo(25, 25, 25, 62.5);
+                ctx.quadraticCurveTo(25, 100, 50, 100);
+                ctx.quadraticCurveTo(50, 120, 30, 125);
+                ctx.quadraticCurveTo(60, 120, 65, 100);
+                ctx.quadraticCurveTo(125, 100, 125, 62.5);
+                ctx.quadraticCurveTo(125, 25, 75, 25);
+
+                //provides outline/border to the shapes, without calling this shape will not be visible
+                ctx.stroke();
+
+
+            }; //end of click
+
+            //Find button by id and attach a event handler for 'click' event
+            getById("btnCan6").onclick = function () {
+
+                //Find element by Id
+                var canvas = getById('canv6');
+
+                //canvas has different context, here we are going to get '2d' context to work on
+                var ctx = canvas.getContext('2d');
+
+                /*
+                Importing images into a canvas is basically a two step process:
+                -> Get a reference to an HTMLImageElement object or to another canvas element as a source. 
+                    It isn't possible to use images by simply providing a URL or path to them.
+                -> Draw the image on the canvas using the drawImage() function.
+                */
+
+                //Create an image object in memory or we can use any existing img on the page
+                var img = new Image();
+
+                //Attach handler with 'onload' event
+                img.onload = function () {
+                    
+                    //provide the img object to draw
+                    ctx.drawImage(img, 0, 0); //drawImage(image, x, y, width, height)
+
+                    //Draw some path on image
+                    ctx.beginPath();
+                    ctx.moveTo(30, 96);
+                    ctx.lineTo(70, 66);
+                    ctx.lineTo(103, 76);
+                    ctx.lineTo(170, 15);
+                    ctx.stroke();
+                };
+                img.src = 'backdrop.png';
+
+            }; //end of click
+
+        } //End of MainFunction
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+    <div>
+        <button id="btnCan1">
+            Draw Rectangles</button>
+    </div>
+    <canvas id="canv1" width="150" height="150">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+
+    <div>
+        <button id="btnCan2">
+            Draw Lines</button>
+    </div>
+    <canvas id="canv2" width="150" height="150">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+
+    <div>
+        <button id="btnCan3">
+            Draw a Shape using Path</button>
+    </div>
+    <canvas id="canv3" width="450" height="250">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+
+    <div>
+        <button id="btnCan4">
+            Draw a Face using Path</button>
+    </div>
+    <canvas id="canv4" width="450" height="250">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+
+    <div>
+        <button id="btnCan5">
+            Draw a Shape using Quadratic Curves</button>
+    </div>
+    <canvas id="canv5" width="450" height="250">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+
+    <div>
+        <button id="btnCan6">
+            Using Images</button>
+    </div>
+    <canvas id="canv6" width="450" height="250">
+        This is fallback content and will be displayed if browser doesn't support canvas
+    </canvas>
+</body>
+</html>

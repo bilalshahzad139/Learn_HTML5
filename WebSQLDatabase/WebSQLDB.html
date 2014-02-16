@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web SQL DB Practice</title>
+
+    
+
+    <script type="text/javascript">
+        var db = {};
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            //Open (or create if new) a database named 'MyDB'
+            var dbSize = 4 * 1024 * 1024; //4MB
+            db = window.openDatabase("MyDB", "1.0", "Testing DB", dbSize);
+                        
+            
+            //find button by id
+            var btn = getById("btnCreateTable");
+            //click event handler
+            btn.onclick = function () {
+                
+                db.transaction(function (tx) {
+                    //Execute a SQL statement to create a table
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS mytable(ID INTEGER PRIMARY KEY ASC, Name TEXT, dob DATETIME)", []);
+                });
+            };
+
+
+            //find button by id
+            var btn = getById("btnCreateTable");
+            //click event handler
+            btn.onclick = function () {
+
+                db.transaction(function (tx) {
+                    //Execute a SQL statement to create a table
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS mytable(ID INTEGER PRIMARY KEY ASC, Name TEXT, dob DATETIME)", []);
+                });
+            };
+
+
+            //find button by id
+            var btnAdd = getById("btnAddData");
+            //click event handler
+            btnAdd.onclick = function () {
+
+                db.transaction(function (tx) {
+                    //Execute a SQL statement to create a table
+                    var data = getById("txtName").value;
+                    var dob = new Date();
+
+                    //Execute insert statement
+                    tx.executeSql("INSERT INTO mytable(Name, dob) VALUES (?,?)",
+                        [data, dob], //parameters list to provide to query
+                        successCallback,
+                        errorCallback);
+
+                });
+            };//end of btnAdd click
+
+            //find button and click event handler
+            getById("btnGetAll").onclick = function () {
+
+                db.transaction(function (tx) {
+                    tx.executeSql("SELECT * FROM mytable", [],
+                        renderData,
+                        errorCallback);
+                });
+
+            };//end of btnAdd click
+
+
+            
+
+
+
+        } //End of MainFunction
+
+        function renderData(tx, rs)
+        {
+            var output = "";
+            for (var i = 0; i < rs.rows.length; i++) {
+                var id = rs.rows.item(i).ID;
+                var Name = rs.rows.item(i).Name;
+                var dob = rs.rows.item(i).dob;
+
+                output += "ID:<b>" + id + "</b> Name:" + Name + "</b> DOB:"+ dob + "</br>";
+            }
+
+            getById("datacontainer").innerHTML = output;
+        }
+        
+        function successCallback(tx, r) {
+            alert('success');
+        }
+
+        function errorCallback(tx, e) {
+            alert(e.message);
+
+        }
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+    </script>
+
+</head>
+<body onload="return MainFunction()">
+
+    <button id="btnCreateTable" > Create Table</button> <br />
+    <input type="text" id="txtName" /><button id="btnAddData" > Add Data</button> <br />
+    <button id="btnGetAll" > Get All Data</button> <br />
+    
+    <div id="datacontainer">
+
+
+    </div>
+    
+</body>
+</html>

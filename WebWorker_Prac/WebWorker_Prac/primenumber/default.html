@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<!-- Copyright © Microsoft Corporation. All rights reserved. -->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Internet Explorer Developer Sample</title>
+    <link rel="stylesheet" type="text/css" href="css/base-sdk.css" />
+    <link rel="stylesheet" type="text/css" href="css/program.css" />
+    <script type="text/javascript" src="script/base-sdk.js"></script>
+    <script type="text/javascript" src="script/program.js"></script>
+</head>
+<body role="application">
+    <div id="header" role="contentinfo"></div>
+
+    <!--Sample title-->
+    <h1 id="sampleTitle">Web Workers</h1>
+
+    <div class="descRegion" role="region" aria-labelledby="descLabel" aria-live="assertive">
+        <h2 id="descLabel">Description</h2>
+        <div class="descContent">
+
+            <!--Description and code snippet-->
+            <p>
+                This example demonstrates the basic usage of <a href="http://dev.w3.org/html5/workers/">Web Workers</a>
+                to run a script in the background and allow the page to continue being responsive to the end user.
+            </p>
+            <p>
+                This sample calculates if a number is 
+           <a href="http://en.wikipedia.org/wiki/Prime_number">prime</a>, both with and without the use of a 
+           <a href="http://msdn.microsoft.com/en-us/library/ie/hh772809(v=vs.85).aspx">Worker object</a> to do the
+           background calculation. To run it, press "Calculate if prime" then immediately press "Cancel". Notice that with Web Workers,
+           the cancellation message immediately appears, and without Web Workers, the "Cancel" button is unresponsive.
+            </p>
+            <h2 class="codeLabel">Code</h2>
+
+        </div>
+    </div>
+
+    <!--Rendered result-->
+    <div class="resultRegion" role="region" aria-labelledby="resultLabel" aria-live="assertive">
+        <h2 id="resultLabel">Result</h2>
+
+        <div class="resultContent">
+            <fieldset>
+                <label for="workersInputBox">With Web Workers:</label>
+                <input type="number" id="workersInputBox" value="9007199254740881" />
+                <button id="workersButton">Calculate if prime</button>
+                <button id="workersCancelButton">Cancel</button>
+                <div id="outputBoxWorkers"></div>
+            </fieldset>
+            <fieldset>
+                <label for="noWorkersInputBox">Without Web Workers:</label>
+                <input type="number" id="noWorkersInputBox" value="9007199254740881" />
+                <button id="noWorkersButton">Calculate if prime</button>
+                <button id="noWorkersCancelButton">Cancel</button>
+                <div id="outputBoxNoWorkers"></div>
+            </fieldset>
+        </div>
+    </div>
+
+    
+
+    <div id="footer" role="contentinfo"></div>
+</body>
+</html>

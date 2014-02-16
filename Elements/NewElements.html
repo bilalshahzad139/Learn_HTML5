@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML 5 New Elements</title>
+    <script>
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+
+        }//End of MainFunction
+
+
+
+    </script>
+</head>
+<body onload="return MainFunction()">
+
+    <form>
+        (type="color"):
+        <input type="color" name="favcolor">
+        <br />
+        (type="date"):
+        <input type="date" name="bday"><br />
+        (type="datetime"):
+        <input type="datetime" name="bdaytime"><br />
+        (type="datetime-local"):
+        <input type="datetime-local" name="bdaytime"><br />
+        (type="email"):
+        <input type="email" name="email" ><br />
+        (type="month"):
+        <input type="month" name="bdaymonth"><br />
+        (type="number"):
+        <input type="number" name="quantity" min="1" max="5" step="2"><br />
+        (type="range"):
+        <input type="range" name="points" min="1" max="10"><br />
+        (type="search"):
+        <input type="search" name="googlesearch"><br />
+        (type="tel"):
+        <input type="tel" name="usrtel"><br />
+        (type="time"):
+        <input type="time" name="usr_time"><br />
+        (type="url"):
+        <input type="url" name="homepage"><br />
+        (type="week"):
+        <input type="week" name="week_year"><br />
+
+        (pattern & title example:) <input type="text" pattern="[A-Za-z]{3}" title="Three letter country code" />
+        (placeholder example:) <input type="text" name="fname" placeholder="First name" />
+        (required example:) <input type="text" required="required" />
+        (multiple example): <input type="file" name="img" multiple>
+        <br />
+
+        (img as submit button): <input type="image" src="img_submit.gif" alt="Submit" width="48" height="48">
+
+        <br />
+
+        <input type="submit" value="submit" />
+
+        <div>
+            <p>Example of 'datalist' element</p>
+            <input list="browsers">
+
+            <datalist id="browsers">
+                <option value="Internet Explorer">
+                <option value="Firefox">
+                <option value="Chrome">
+                <option value="Opera">
+                <option value="Safari">
+            </datalist>
+        </div>
+
+    </form>
+
+    <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">
+
+        <p>Example of 'output' element</p>
+
+        0<input type="range" id="a" value="50">100 +
+        <input type="number" id="b" value="50">=
+        <output name="x" for="a b"></output>
+    </form>
+
+</body>
+</html>
+
+
