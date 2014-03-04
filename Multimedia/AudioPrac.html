@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Practice</title>
+
+    <script type="text/javascript">
+
+
+        //Function which will be executed on page Load (set on body load), we can consider it as our Main entry point
+        function MainFunction() {
+
+            var myAudio = getById("audio1");
+
+            getById("playpaus").onclick = function () {
+                if (myAudio.paused)
+                    myAudio.play();
+                else
+                    myAudio.pause();
+            };
+            
+            getById("btnIncVol").onclick = function () {
+                myAudio.volume += 0.1;
+            }
+            getById("btnDecVol").onclick = function () {
+                myAudio.volume -= 0.1;
+            }
+
+
+        } //End of MainFunction
+
+        function getById(id) {
+            return document.getElementById(id);
+        }
+
+    </script>
+
+</head>
+<body onload="return MainFunction()">
+
+    <div>
+        <h1>Three Major Formats</h1>
+        -> Ogg/Vorbis (.oga, .ogg extention)
+        <br />
+        -> MP3 (.mp3 extension)
+        <br />
+        -> MP4 (.mp4, .mp4a, .aac extension)
+        <br />
+        -> WAV (.wav extension)
+        <br />
+        If more sources are provided in audio tag, it runs the first according to browser support
+    </div>
+    <audio controls autoplay="autoplay" loop="loop">
+        
+        <source src="mpthreetest.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+    <div style="text-align: center">
+        <button id="playpaus">Play/Pause</button>
+        <button id="btnIncVol">Increase Volume</button>
+        <button id="btnDecVol">Decrease Volume</button>
+        <br>
+        <audio id="audio1" src="mpthreetest.mp3">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+</body>
+</html>

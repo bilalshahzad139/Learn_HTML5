@@ -23,7 +23,7 @@ onmessage = function (e) {
     //e.data contains the JSON data send from page
     setTimeout(function () {
         //Wait for a time which user sends to this and then send data back to user  
-        postMessage(e.data.message);
+        postMessage("From Workder Thread:" + e.data.message);
     },e.data.timeout * 1000);
 }
 

@@ -69,7 +69,7 @@
 
                     // Get a File object representing the file,
                     // then use FileReader to read its contents.
-                    fileEntry.file(function (file) {
+                    fileEntry.file(function (f) {
 
                         //create reader object to reader
                         var reader = new FileReader();
@@ -81,7 +81,7 @@
                         };
 
                         //read text from 'file' object and raise 'onloadend' event when data is read
-                        reader.readAsText(file);
+                        reader.readAsText(f);
 
                     }, errorHandler);//end of file
                 }, errorHandler);//end of getFile

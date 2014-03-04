@@ -6,3 +6,4 @@ C:\Users\bshahzad\Documents\GitHub\Learn_HTML5\HTML5_AppCache\HTML5_AppCache\bin
 C:\Users\bshahzad\Documents\GitHub\Learn_HTML5\HTML5_AppCache\HTML5_AppCache\bin\HTML5_AppCache.pdb
 C:\Users\bshahzad\Documents\GitHub\Learn_HTML5\HTML5_AppCache\HTML5_AppCache\obj\Debug\HTML5_AppCache.dll
 C:\Users\bshahzad\Documents\GitHub\Learn_HTML5\HTML5_AppCache\HTML5_AppCache\obj\Debug\HTML5_AppCache.pdb
+C:\Users\bshahzad\Documents\GitHub\Learn_HTML5\HTML5_AppCache\HTML5_AppCache\obj\Debug\HTML5_AppCache.csprojResolveAssemblyReference.cache

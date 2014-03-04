@@ -29,18 +29,6 @@
 
 
             //find button by id
-            var btn = getById("btnCreateTable");
-            //click event handler
-            btn.onclick = function () {
-
-                db.transaction(function (tx) {
-                    //Execute a SQL statement to create a table
-                    tx.executeSql("CREATE TABLE IF NOT EXISTS mytable(ID INTEGER PRIMARY KEY ASC, Name TEXT, dob DATETIME)", []);
-                });
-            };
-
-
-            //find button by id
             var btnAdd = getById("btnAddData");
             //click event handler
             btnAdd.onclick = function () {
